@@ -35,6 +35,12 @@ class _ExpensesHomeState extends State<ExpensesHome> {
       date: DateTime.now(),
       category: Category.bills,
     ),
+    Expense(
+      title: 'Tree Service',
+      amount: 600.0,
+      date: DateTime.now(),
+      category: Category.other,
+    ),
   ];
 
   // void _addExpense(String expense) {
