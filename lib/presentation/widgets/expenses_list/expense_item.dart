@@ -24,7 +24,7 @@ class ExpenseItem extends StatelessWidget {
                     color: Colors.grey[700],
                   ),
                   const SizedBox(width: 8.0),
-                  Text(expense.date.toLocal().toString().split(' ')[0]),
+                  Text(expense.formattedDate),
                 ],)
               ],
             ),

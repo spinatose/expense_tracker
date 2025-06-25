@@ -53,7 +53,9 @@ class _ExpensesHomeState extends State<ExpensesHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actionsPadding: const EdgeInsets.only(right: 40.0),
         title: const Text('Expenses Tracker'),
+        actions: [IconButton(icon: const Icon(Icons.add), onPressed: () {})],
       ),
       body: Column(
         children: [
