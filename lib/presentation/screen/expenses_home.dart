@@ -43,11 +43,9 @@ class _ExpensesHomeState extends State<ExpensesHome> {
     ),
   ];
 
-  // void _addExpense(String expense) {
-  //   setState(() {
-  //     _expenses.add(expense);
-  //   });
-  // }
+  void _openAddExpenseModal() {
+    showModalBottomSheet(context: context, builder: (ctx) { return Text("Add Expense Modal"); });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +53,12 @@ class _ExpensesHomeState extends State<ExpensesHome> {
       appBar: AppBar(
         actionsPadding: const EdgeInsets.only(right: 40.0),
         title: const Text('Expenses Tracker'),
-        actions: [IconButton(icon: const Icon(Icons.add), onPressed: () {})],
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: _openAddExpenseModal,
+          ),
+        ],
       ),
       body: Column(
         children: [
