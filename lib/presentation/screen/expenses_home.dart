@@ -1,5 +1,6 @@
 import 'package:expense_tracker/presentation/widgets/expenses_list/expenses_list.dart';
 import 'package:expense_tracker/domain/expense.dart';
+import 'package:expense_tracker/presentation/widgets/forms/expense_edit.dart';
 import 'package:flutter/material.dart';
 
 class ExpensesHome extends StatefulWidget {
@@ -44,7 +45,24 @@ class _ExpensesHomeState extends State<ExpensesHome> {
   ];
 
   void _openAddExpenseModal() {
-    showModalBottomSheet(context: context, builder: (ctx) { return Text("Add Expense Modal"); });
+    showModalBottomSheet(
+      context: context,
+      builder: (ctx) {
+        return ExpenseEdit(onSubmit: (title, amount, dateOfExpense) => { 
+          setState(() {
+            _expenses.add(
+              Expense(
+                title: title,
+                amount: amount,
+                date: dateOfExpense,
+              ),
+            );
+          }),
+          Navigator.of(ctx).pop(), // Close the modal after adding the expense
+        }
+        );
+      },
+    );
   }
 
   @override
