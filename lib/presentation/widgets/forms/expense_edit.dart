@@ -40,23 +40,19 @@ class _ExpenseEditState extends State<ExpenseEdit> {
             controller: titleController,
           ),
           const SizedBox(height: 8.0),
-          TextField(
-            decoration: const InputDecoration(
-              label: Text('Amount'),
-              prefixText: '\$',
+          Row(children: [
+            Expanded(child: 
+              TextField(
+                decoration: const InputDecoration(
+                  label: Text('Amount'),
+                  prefixText: '\$',
+                ),
+                keyboardType: TextInputType.number,
+                //onChanged: (value) => widget.amount = double.tryParse(value) ?? 0.0, // Update amount on change
+                controller: amountController,
+              ),
             ),
-            keyboardType: TextInputType.number,
-            //onChanged: (value) => widget.amount = double.tryParse(value) ?? 0.0, // Update amount on change
-            controller: amountController,
-          ),
-          const SizedBox(height: 8.0),
-          TextField(
-            decoration: const InputDecoration(labelText: 'Date'),
-            keyboardType: TextInputType.datetime,
-            //onChanged: (value) => widget.dateOfExpense = DateTime.tryParse(value) ?? DateTime.now(), // Update date on change
-            controller:
-                dateController, // Assuming dateFormatter is defined in the domain
-          ),
+          ]),
           const SizedBox(height: 16.0),
           Row(
             children: [
