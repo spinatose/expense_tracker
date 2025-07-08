@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class ExpenseEdit extends StatefulWidget {
   final void Function(String title, double amount, DateTime date) onSubmit;
 
-  ExpenseEdit({super.key, required this.onSubmit});
+  const ExpenseEdit({super.key, required this.onSubmit});
 
   @override
   State<ExpenseEdit> createState() => _ExpenseEditState();
@@ -40,19 +40,33 @@ class _ExpenseEditState extends State<ExpenseEdit> {
             controller: titleController,
           ),
           const SizedBox(height: 8.0),
-          Row(children: [
-            Expanded(child: 
-              TextField(
-                decoration: const InputDecoration(
-                  label: Text('Amount'),
-                  prefixText: '\$',
+          Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  decoration: const InputDecoration(
+                    label: Text('Amount'),
+                    prefixText: '\$',
+                  ),
+                  keyboardType: TextInputType.number,
+                  //onChanged: (value) => widget.amount = double.tryParse(value) ?? 0.0, // Update amount on change
+                  controller: amountController,
                 ),
-                keyboardType: TextInputType.number,
-                //onChanged: (value) => widget.amount = double.tryParse(value) ?? 0.0, // Update amount on change
-                controller: amountController,
               ),
-            ),
-          ]),
+              const SizedBox(width: 16.0),
+              Expanded(
+                child: Row(
+                  children: [
+                    const Text('Select Date'),
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.calendar_month),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
           const SizedBox(height: 16.0),
           Row(
             children: [
@@ -66,9 +80,12 @@ class _ExpenseEditState extends State<ExpenseEdit> {
                 },
                 child: const Text('Add Expense'),
               ),
-              TextButton(onPressed: () => {
-                Navigator.pop(context) // Close the modal without saving
-              }, child: const Text('Cancel')),
+              TextButton(
+                onPressed: () => {
+                  Navigator.pop(context), // Close the modal without saving
+                },
+                child: const Text('Cancel'),
+              ),
             ],
           ),
         ],
