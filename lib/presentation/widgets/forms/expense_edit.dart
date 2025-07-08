@@ -17,6 +17,22 @@ class _ExpenseEditState extends State<ExpenseEdit> {
     text: dateFormatter.format(DateTime.now()),
   );
 
+  void _selectDate() async {
+    final initialDate = DateTime.now();
+    final pickedDate = await showDatePicker(
+      context: context,
+      initialDate: initialDate,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+
+    if (pickedDate != null && pickedDate != initialDate) {
+      setState(() {
+        dateController.text = dateFormatter.format(pickedDate);
+      });
+    }
+  }
+
   @override
   void dispose() {
     titleController.dispose();
@@ -56,10 +72,11 @@ class _ExpenseEditState extends State<ExpenseEdit> {
               const SizedBox(width: 16.0),
               Expanded(
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     const Text('Select Date'),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: _selectDate,
                       icon: const Icon(Icons.calendar_month),
                     ),
                   ],
