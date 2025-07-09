@@ -2,7 +2,7 @@ import 'package:expense_tracker/domain/expense.dart';
 import 'package:flutter/material.dart';
 
 class ExpenseEdit extends StatefulWidget {
-  final void Function(String title, double amount, DateTime date) onSubmit;
+  final void Function(String title, double amount, DateTime date, Category category) onSubmit;
 
   const ExpenseEdit({super.key, required this.onSubmit});
 
@@ -13,22 +13,29 @@ class ExpenseEdit extends StatefulWidget {
 class _ExpenseEditState extends State<ExpenseEdit> {
   final titleController = TextEditingController(text: 'New Expense');
   final amountController = TextEditingController(text: '0.0');
-  final dateController = TextEditingController(
-    text: dateFormatter.format(DateTime.now()),
-  );
+  DateTime? selectedDate = DateTime.now();
+  Category selectedCategory = Category.other;
 
   void _selectDate() async {
     final initialDate = DateTime.now();
     final pickedDate = await showDatePicker(
       context: context,
       initialDate: initialDate,
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
+      firstDate: DateTime(
+        initialDate.year - 1,
+        initialDate.month,
+        initialDate.day,
+      ),
+      lastDate: DateTime(
+        initialDate.year + 1,
+        initialDate.month,
+        initialDate.day,
+      ),
     );
 
     if (pickedDate != null && pickedDate != initialDate) {
       setState(() {
-        dateController.text = dateFormatter.format(pickedDate);
+        selectedDate = pickedDate;
       });
     }
   }
@@ -37,7 +44,6 @@ class _ExpenseEditState extends State<ExpenseEdit> {
   void dispose() {
     titleController.dispose();
     amountController.dispose();
-    dateController.dispose();
     super.dispose();
   }
 
@@ -74,6 +80,12 @@ class _ExpenseEditState extends State<ExpenseEdit> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
+                    Text(
+                      selectedDate != null
+                          ? dateFormatter.format(selectedDate!)
+                          : DateTime.now().toString(),
+                    ),
+                    const SizedBox(width: 16.0),
                     const Text('Select Date'),
                     IconButton(
                       onPressed: _selectDate,
@@ -87,13 +99,35 @@ class _ExpenseEditState extends State<ExpenseEdit> {
           const SizedBox(height: 16.0),
           Row(
             children: [
+              DropdownButton(
+                items: Category.values
+                    .map(
+                      (category) =>
+                          DropdownMenuItem(
+                            value: category,
+                            child: Text(category.name)),
+                    )
+                    .toList(),
+                onChanged: (value) {
+                  if (value is Category) {
+                    setState(() {
+                      selectedCategory = value;
+                    });
+                  }
+                },
+                value: selectedCategory,
+              ),
               ElevatedButton(
                 onPressed: () {
                   final title = titleController.text;
                   final amount = double.tryParse(amountController.text) ?? 0;
-                  final date =
-                      DateTime.tryParse(dateController.text) ?? DateTime.now();
-                  widget.onSubmit(title, amount, date);
+
+                  widget.onSubmit(
+                    title,
+                    amount,
+                    selectedDate ?? DateTime.now(),
+                    selectedCategory,
+                  );
                 },
                 child: const Text('Add Expense'),
               ),
