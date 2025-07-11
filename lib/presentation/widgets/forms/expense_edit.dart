@@ -80,13 +80,15 @@ class _ExpenseEditState extends State<ExpenseEdit> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Text(
-                      selectedDate != null
-                          ? dateFormatter.format(selectedDate!)
-                          : DateTime.now().toString(),
+                    Expanded(
+                      child: Text(
+                        selectedDate != null
+                            ? dateFormatter.format(selectedDate!)
+                            : DateTime.now().toString(),
+                      ),
                     ),
                     const SizedBox(width: 16.0),
-                    const Text('Select Date'),
+                    Expanded(child: const Text('Select Date')),
                     IconButton(
                       onPressed: _selectDate,
                       icon: const Icon(Icons.calendar_month),
@@ -135,7 +137,7 @@ class _ExpenseEditState extends State<ExpenseEdit> {
                 onPressed: () => {
                   Navigator.pop(context), // Close the modal without saving
                 },
-                child: const Text('Cancel'),
+                child: Expanded(child: const Text('Cancel')),
               ),
             ],
           ),
