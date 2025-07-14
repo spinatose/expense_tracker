@@ -106,7 +106,7 @@ class _ExpenseEditState extends State<ExpenseEdit> {
                             : DateTime.now().toString(),
                       ),
                     ),
-                    //const SizedBox(width: 16.0),
+                    const SizedBox(width: 16.0),
                     Expanded(child: const Text('Select Date')),
                     IconButton(
                       onPressed: _selectDate,
@@ -147,7 +147,7 @@ class _ExpenseEditState extends State<ExpenseEdit> {
                 onPressed: () => {
                   Navigator.pop(context), // Close the modal without saving
                 },
-                child: const Text('Cancel'),
+                child: Expanded(child: const Text('Cancel')),
               ),
             ],
           ),
