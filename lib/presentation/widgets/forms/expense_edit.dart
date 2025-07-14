@@ -2,7 +2,13 @@ import 'package:expense_tracker/domain/expense.dart';
 import 'package:flutter/material.dart';
 
 class ExpenseEdit extends StatefulWidget {
-  final void Function(String title, double amount, DateTime date, Category category) onSubmit;
+  final void Function(
+    String title,
+    double amount,
+    DateTime date,
+    Category category,
+  )
+  onSubmit;
 
   const ExpenseEdit({super.key, required this.onSubmit});
 
@@ -40,6 +46,19 @@ class _ExpenseEditState extends State<ExpenseEdit> {
     }
   }
 
+  
+  void _submit() {
+    final title = titleController.text;
+    final amount = double.tryParse(amountController.text) ?? 0;
+
+    widget.onSubmit(
+      title,
+      amount,
+      selectedDate ?? DateTime.now(),
+      selectedCategory,
+    );
+  }
+
   @override
   void dispose() {
     titleController.dispose();
@@ -75,18 +94,20 @@ class _ExpenseEditState extends State<ExpenseEdit> {
                   controller: amountController,
                 ),
               ),
-              const SizedBox(width: 16.0),
+              const SizedBox(width: 8.0),
               Expanded(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Text(
-                      selectedDate != null
-                          ? dateFormatter.format(selectedDate!)
-                          : DateTime.now().toString(),
+                    Expanded(
+                      child: Text(
+                        selectedDate != null
+                            ? dateFormatter.format(selectedDate!)
+                            : DateTime.now().toString(),
+                      ),
                     ),
-                    const SizedBox(width: 16.0),
-                    const Text('Select Date'),
+                    //const SizedBox(width: 16.0),
+                    Expanded(child: const Text('Select Date')),
                     IconButton(
                       onPressed: _selectDate,
                       icon: const Icon(Icons.calendar_month),
@@ -102,10 +123,10 @@ class _ExpenseEditState extends State<ExpenseEdit> {
               DropdownButton(
                 items: Category.values
                     .map(
-                      (category) =>
-                          DropdownMenuItem(
-                            value: category,
-                            child: Text(category.name)),
+                      (category) => DropdownMenuItem(
+                        value: category,
+                        child: Text(category.name),
+                      ),
                     )
                     .toList(),
                 onChanged: (value) {
@@ -117,18 +138,9 @@ class _ExpenseEditState extends State<ExpenseEdit> {
                 },
                 value: selectedCategory,
               ),
+              const SizedBox(width: 16.0),
               ElevatedButton(
-                onPressed: () {
-                  final title = titleController.text;
-                  final amount = double.tryParse(amountController.text) ?? 0;
-
-                  widget.onSubmit(
-                    title,
-                    amount,
-                    selectedDate ?? DateTime.now(),
-                    selectedCategory,
-                  );
-                },
+                onPressed: _submit,
                 child: const Text('Add Expense'),
               ),
               TextButton(
@@ -143,4 +155,5 @@ class _ExpenseEditState extends State<ExpenseEdit> {
       ),
     );
   }
+
 }
