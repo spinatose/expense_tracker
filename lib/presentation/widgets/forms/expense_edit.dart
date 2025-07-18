@@ -46,10 +46,36 @@ class _ExpenseEditState extends State<ExpenseEdit> {
     }
   }
 
-  
   void _submit() {
-    final title = titleController.text;
+    final title = titleController.text.trim();
     final amount = double.tryParse(amountController.text) ?? 0;
+
+    if (title.isEmpty || amount <= 0 || selectedDate == null) {
+      // Show an error message or handle invalid input
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(
+      //     content: Text(
+      //       'Title must not be empty; amount must be greater than 0; a date must be selected.',
+      //     ),
+      //   ),
+      // );
+
+      showDialog(context: context, builder: (ctx)  => 
+        AlertDialog(
+          title: const Text('Invalid Input'),
+          content: const Text(
+            'Title must not be empty; amount must be greater than 0; a date must be selected.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(ctx).pop(),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+      return;
+    }
 
     widget.onSubmit(
       title,
@@ -138,7 +164,7 @@ class _ExpenseEditState extends State<ExpenseEdit> {
                 },
                 value: selectedCategory,
               ),
-              const SizedBox(width: 16.0),
+              const SizedBox(width: 50.0),
               ElevatedButton(
                 onPressed: _submit,
                 child: const Text('Add Expense'),
@@ -155,5 +181,4 @@ class _ExpenseEditState extends State<ExpenseEdit> {
       ),
     );
   }
-
 }
