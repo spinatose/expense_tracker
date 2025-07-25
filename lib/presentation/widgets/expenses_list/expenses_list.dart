@@ -13,7 +13,20 @@ class ExpensesList extends StatelessWidget {
     return Expanded(
       child: ListView.builder(
         itemCount: expenses.length,
-        itemBuilder: (context, index) => ExpenseItem(expense: expenses[index]),
+        itemBuilder: (context, index) => Dismissible(
+          key: ValueKey(expenses[index]),
+          onDismissed: (direction) {
+            expenses.removeAt(index);
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  '${expenses[index].title} dismissed',
+                ),
+              ),
+            );
+          },
+          child: ExpenseItem(expense: expenses[index]),
+        ),
       ),
     );
   }

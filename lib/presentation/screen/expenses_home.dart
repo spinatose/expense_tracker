@@ -46,6 +46,7 @@ class _ExpensesHomeState extends State<ExpensesHome> {
 
   void _openAddExpenseModal() {
     showModalBottomSheet(
+      isScrollControlled: true,
       context: context,
       builder: (ctx) {
         return ExpenseEdit(onSubmit: (expense) => { 
