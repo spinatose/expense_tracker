@@ -48,20 +48,12 @@ class _ExpensesHomeState extends State<ExpensesHome> {
     showModalBottomSheet(
       context: context,
       builder: (ctx) {
-        return ExpenseEdit(onSubmit: (title, amount, dateOfExpense, category) => { 
+        return ExpenseEdit(onSubmit: (expense) => { 
           setState(() {
-            _expenses.add(
-              Expense(
-                title: title,
-                amount: amount,
-                date: dateOfExpense,
-                category: category,
-              ),
-            );
+            _expenses.add(expense);
           }),
           Navigator.of(ctx).pop(), // Close the modal after adding the expense
-        }
-        );
+        });
       },
     );
   }

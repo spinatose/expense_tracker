@@ -2,13 +2,7 @@ import 'package:expense_tracker/domain/expense.dart';
 import 'package:flutter/material.dart';
 
 class ExpenseEdit extends StatefulWidget {
-  final void Function(
-    String title,
-    double amount,
-    DateTime date,
-    Category category,
-  )
-  onSubmit;
+  final void Function(Expense expense) onSubmit;
 
   const ExpenseEdit({super.key, required this.onSubmit});
 
@@ -69,20 +63,22 @@ class _ExpenseEditState extends State<ExpenseEdit> {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(ctx).pop(),
-              child: const Text('OK'),
+              child: const Text('Ok'),
             ),
           ],
         ),
       );
       return;
     }
-
-    widget.onSubmit(
-      title,
-      amount,
-      selectedDate ?? DateTime.now(),
-      selectedCategory,
+    
+    Expense expense = Expense(
+      title: title,
+      amount: amount,
+      date: selectedDate!,
+      category: selectedCategory,
     );
+
+    widget.onSubmit(expense);
   }
 
   @override
