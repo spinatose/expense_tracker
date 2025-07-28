@@ -1,33 +1,37 @@
 import 'package:expense_tracker/presentation/widgets/expenses_list/expense_item.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:expense_tracker/domain/expense.dart';
 
 class ExpensesList extends StatelessWidget {
   final List<Expense> expenses;
+  final void Function(Expense expense) onRemoveExpense;
 
-  const ExpensesList({super.key, required this.expenses});
+  const ExpensesList({
+    super.key,
+    required this.expenses,
+    required this.onRemoveExpense,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: ListView.builder(
+    Widget mainContent = const Center(
+      child: Text('No expenses found. Start adding some!'),
+    );
+    if (expenses.isNotEmpty) {
+      mainContent = ListView.builder(
         itemCount: expenses.length,
         itemBuilder: (context, index) => Dismissible(
           key: ValueKey(expenses[index]),
           onDismissed: (direction) {
-            expenses.removeAt(index);
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  '${expenses[index].title} dismissed',
-                ),
-              ),
-            );
+            onRemoveExpense(expenses[index]);
           },
           child: ExpenseItem(expense: expenses[index]),
         ),
-      ),
+      );
+    }
+
+    return Expanded(
+      child: mainContent
     );
   }
 }

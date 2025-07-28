@@ -59,6 +59,19 @@ class _ExpensesHomeState extends State<ExpensesHome> {
     );
   }
 
+  void _removeExpense(Expense expense) {
+    setState(() {
+      _expenses.remove(expense);
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 2),
+        content: Text('${expense.title} dismissed'),
+      ),
+    );
+  } 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,7 +88,7 @@ class _ExpensesHomeState extends State<ExpensesHome> {
       body: Column(
         children: [
           Text('Chart'),
-          ExpensesList(expenses: _expenses),
+          ExpensesList(expenses: _expenses, onRemoveExpense: _removeExpense),
         ],
       ),
     );
