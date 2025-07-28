@@ -169,7 +169,7 @@ class _ExpenseEditState extends State<ExpenseEdit> {
                 onPressed: () => {
                   Navigator.pop(context), // Close the modal without saving
                 },
-                child: Expanded(child: const Text('Cancel')),
+                child: const Text('Cancel'),
               ),
             ],
           ),
