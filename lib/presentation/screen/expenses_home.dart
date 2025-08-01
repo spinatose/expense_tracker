@@ -60,14 +60,23 @@ class _ExpensesHomeState extends State<ExpensesHome> {
   }
 
   void _removeExpense(Expense expense) {
+    final index = _expenses.indexOf(expense);
     setState(() {
       _expenses.remove(expense);
     });
-
+    ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        duration: const Duration(seconds: 2),
+        duration: const Duration(seconds: 3),
         content: Text('${expense.title} dismissed'),
+        action: SnackBarAction(
+          label: 'Undo',
+          onPressed: () {
+            setState(() {
+              _expenses.insert(index, expense);
+            });
+          },
+        ),
       ),
     );
   } 
