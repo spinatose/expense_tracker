@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:expense_tracker/presentation/widgets/chart/chart.dart';
 import 'package:expense_tracker/presentation/widgets/expenses_list/expenses_list.dart';
 import 'package:expense_tracker/domain/expense.dart';
 import 'package:expense_tracker/presentation/widgets/forms/expense_edit.dart';
@@ -96,7 +99,7 @@ class _ExpensesHomeState extends State<ExpensesHome> {
       ),
       body: Column(
         children: [
-          Text('Chart'),
+          Chart(expenses: _expenses),
           ExpensesList(expenses: _expenses, onRemoveExpense: _removeExpense),
         ],
       ),
