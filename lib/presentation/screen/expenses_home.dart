@@ -52,12 +52,14 @@ class _ExpensesHomeState extends State<ExpensesHome> {
       isScrollControlled: true,
       context: context,
       builder: (ctx) {
-        return ExpenseEdit(onSubmit: (expense) => { 
-          setState(() {
-            _expenses.add(expense);
-          }),
-          Navigator.of(ctx).pop(), // Close the modal after adding the expense
-        });
+        return ExpenseEdit(
+          onSubmit: (expense) => {
+            setState(() {
+              _expenses.add(expense);
+            }),
+            Navigator.of(ctx).pop(), // Close the modal after adding the expense
+          },
+        );
       },
     );
   }
@@ -82,10 +84,14 @@ class _ExpensesHomeState extends State<ExpensesHome> {
         ),
       ),
     );
-  } 
+  }
 
   @override
   Widget build(BuildContext context) {
+    var screenWidth = MediaQuery.of(context).size.width;
+    // print(MediaQuery.of(context).size.width);
+    // print(MediaQuery.of(context).size.height);
+
     return Scaffold(
       appBar: AppBar(
         actionsPadding: const EdgeInsets.only(right: 40.0),
@@ -97,12 +103,28 @@ class _ExpensesHomeState extends State<ExpensesHome> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Chart(expenses: _expenses),
-          ExpensesList(expenses: _expenses, onRemoveExpense: _removeExpense),
-        ],
-      ),
+      body: screenWidth < 600
+          ? Column(
+              children: [
+                Chart(expenses: _expenses),
+                ExpensesList(
+                  expenses: _expenses,
+                  onRemoveExpense: _removeExpense,
+                ),
+              ],
+            )
+          : Row(
+              children: [
+                Expanded(child: Chart(expenses: _expenses)),
+                const SizedBox(width: 16.0),
+                Expanded(
+                  child: ExpensesList(
+                    expenses: _expenses,
+                    onRemoveExpense: _removeExpense,
+                  ),
+                ),
+              ],
+            ),
     );
   }
 }
